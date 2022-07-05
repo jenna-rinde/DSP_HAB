@@ -1,3 +1,9 @@
+##Created by Jenna Rinde
+##Last updated on 7/5/2022
+##Purpose: Pull stations from CDEC around the Delta, filter down to water quality and flow stations, then create map(s) of stations. Maps will likely be used for the Delta Science Program Workshop in November 2022. 
+
+
+#load libraries
 library(tidyr)
 library(tidyverse)
 library(dplyr)
@@ -6,10 +12,15 @@ library(Rcpp)
 library(tibble)
 library(readr)
 
+#set work id or folder
+
 setwd("C:/Users/jenna/OneDrive/Data_Repository/DSP_HAB")
 
+#import station list that I already downloaded from CDEC, at some point see if this can be automated somehow
 
 stations = read.csv("CDEC_Stations.csv")
+
+#Convert from wide to long format so sensors are broken up by each code
 
 long = separate_rows(stations, "Sensors",  convert = TRUE)
 
@@ -35,6 +46,7 @@ check = test2 %>%
   filter(Sensor.No == "1" | Sensor.No == "20" |Sensor.No == "21" | Sensor.No =="25" | Sensor.No == "28"|Sensor.No =="61"| Sensor.No == "62" | Sensor.No == "100" | Sensor.No == "221") %>%
   group_by(STA)
 
+#checking in Excel to see how it looks
 write_csv(check, "check.csv")
 
 check2<-subset(check, select= -c(Sensor.No, Description, Units))
@@ -42,7 +54,10 @@ check2<-subset(check, select= -c(Sensor.No, Description, Units))
 check2 %>% 
   pivot_wider(check2, names_from = Sensor, values_from = Units)
 
-
+#Breaking down by station type
+#flow = flow and velocity sensors
+#chl.stations = have the continuous chlorophyll probe that has a phycocyanin component to detect cyanobacteria
+#Water quality staions that have have turbidity, pH and DO, they alos have water temperature and salinity (EC) but other stations have that too, see if I can filter down to get stations that only have all specified parameters. 
 flow.stations = dplyr::filter(check, Sensor %in% c("FLOW", "VLOCITY"))
 
 chl.stations = dplyr::filter(check, Sensor %in% c("CHLORPH"))
@@ -51,6 +66,7 @@ wq.stations = dplyr::filter(check, Sensor %in% c("TURB WF", "PH VAL", "DIS OXY")
 
 
 #trying to make it wide so each variable has it's own row, with a true/false statement
+#below code doesn't work yet
 #wide = check2 %>% 
   pivot_wider(check2, names_from = c(STA, Station.Name, Latitude, Longitude, County.Name, Agency.Name), values_from = Sensor)
   
