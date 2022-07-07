@@ -43,7 +43,7 @@ test2 <- dplyr::inner_join(long, sensors, by = "Sensor.No")
 
 check = test2 %>% 
   select(STA, Station.Name, Latitude, Longitude, County.Name, Agency.Name, Sensor.No, Sensor, Description, Units) %>% 
-  filter(Sensor.No == "1" | Sensor.No == "20" |Sensor.No == "21" | Sensor.No =="25" | Sensor.No == "28"|Sensor.No =="61"| Sensor.No == "62" | Sensor.No == "100" | Sensor.No == "221") %>%
+  filter(Sensor.No == "1" | Sensor.No == "20" |Sensor.No == "21" | Sensor.No =="25" | Sensor.No == "28"|Sensor.No =="61"| Sensor.No == "62" | Sensor.No == "100" | Sensor.No == "221" | Sensor.No == "9" | Sensor.No == "10" | Sensor.No == "16" | Sensor.No == "16" | Sensor.No == "26" | Sensor.No == "29" | Sensor.No == "146" | Sensor.No == "246" | Sensor.No == "247"| Sensor.No == "248" | Sensor.No == "267" | Sensor.No == "268" | Sensor.No == "269" ) %>%
   group_by(STA)
 
 #checking in Excel to see how it looks
